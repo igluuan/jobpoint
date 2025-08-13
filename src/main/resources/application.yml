@@ -1,0 +1,5 @@
+spring:
+    application:
+        name: jobpoint
+    profiles:
+        active: dev

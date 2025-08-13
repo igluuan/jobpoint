@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_jobpoint
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: jobpoint_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - jobpoint-net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_jobpoint
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - jobpoint-net
+
+volumes:
+  postgres_data:
+
+networks:
+  jobpoint-net:
+    driver: bridge
+
