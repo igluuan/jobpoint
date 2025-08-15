@@ -1,4 +1,4 @@
-package om.dev.jobpoint.dtos.response;
+package om.dev.jobpoint.dtos.response.user;
 
 import java.util.UUID;
 

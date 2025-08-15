@@ -1,8 +1,8 @@
 package om.dev.jobpoint.service;
 
 import lombok.RequiredArgsConstructor;
-import om.dev.jobpoint.dtos.request.UserRegisterRequest;
-import om.dev.jobpoint.dtos.response.UserRegisterResponse;
+import om.dev.jobpoint.dtos.request.user.UserRegisterRequest;
+import om.dev.jobpoint.dtos.response.user.UserRegisterResponse;
 import om.dev.jobpoint.mapper.UserMapper;
 import om.dev.jobpoint.model.User;
 import om.dev.jobpoint.repository.UserRepository;

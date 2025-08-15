@@ -2,8 +2,8 @@ package om.dev.jobpoint.mapper;
 
 import org.springframework.stereotype.Component;
 import om.dev.jobpoint.model.User;
-import om.dev.jobpoint.dtos.request.UserRegisterRequest;
-import om.dev.jobpoint.dtos.response.UserRegisterResponse;
+import om.dev.jobpoint.dtos.request.user.UserRegisterRequest;
+import om.dev.jobpoint.dtos.response.user.UserRegisterResponse;
 import java.util.Collections;
 
 @Component

@@ -1,4 +1,4 @@
-package om.dev.jobpoint.dtos.request;
+package om.dev.jobpoint.dtos.request.user;
 
 public record UserRegisterRequest(
         String firstName,

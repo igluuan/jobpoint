@@ -1,8 +1,8 @@
-package om.dev.jobpoint.controller;
+package om.dev.jobpoint.controller.user;
 
 import lombok.RequiredArgsConstructor;
-import om.dev.jobpoint.dtos.request.UserRegisterRequest;
-import om.dev.jobpoint.dtos.response.UserRegisterResponse;
+import om.dev.jobpoint.dtos.request.user.UserRegisterRequest;
+import om.dev.jobpoint.dtos.response.user.UserRegisterResponse;
 import om.dev.jobpoint.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
