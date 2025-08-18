@@ -6,20 +6,28 @@ import om.dev.jobpoint.dtos.response.user.UserRegisterResponse;
 import om.dev.jobpoint.mapper.UserMapper;
 import om.dev.jobpoint.model.User;
 import om.dev.jobpoint.repository.UserRepository;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper mapper;
 
     public UserRegisterResponse register(UserRegisterRequest request){
-        if (request.firstName() == null || request.lastName() == null || request.email() == null || request.password() == null) {
-            throw new IllegalArgumentException("All fields are required");
+        // Verifica se o e-mail já está cadastrado
+        if (userRepository.existsByEmail(request.email())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "E-mail já cadastrado");
         }
-        User user = new UserMapper().toUser(request);
-        userRepository.save(user);
-        return new UserMapper().toUserRegisterResponse(user);
+        String encodedPassword = passwordEncoder.encode(request.password());
+        User user = mapper.toUser(request);
+        user.changePassword(encodedPassword);
+        User savedUser = userRepository.save(user);
+        return mapper.toUserRegisterResponse(savedUser);
     }
-
 }

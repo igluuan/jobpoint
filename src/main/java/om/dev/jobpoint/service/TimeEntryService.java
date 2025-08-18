@@ -22,7 +22,7 @@ public class TimeEntryService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         TimeEntry timeEntry = timeEntryMapper.toTimeEntry(request, user);
-        timeEntryRepository.save(timeEntry);
-        return timeEntryMapper.toTimeEntryResponse(timeEntry);
+        TimeEntry savedTimeEntry = timeEntryRepository.save(timeEntry);
+        return timeEntryMapper.toTimeEntryResponse(savedTimeEntry);
     }
 }

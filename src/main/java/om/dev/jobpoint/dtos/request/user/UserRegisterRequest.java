@@ -1,9 +1,12 @@
 package om.dev.jobpoint.dtos.request.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public record UserRegisterRequest(
-        String firstName,
-        String lastName,
-        String email,
-        String password
+        @NotBlank String firstName,
+        @NotBlank String lastName,
+        @NotBlank @Email String email,
+        @NotBlank String password
 ) {
 }

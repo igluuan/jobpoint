@@ -26,4 +26,11 @@ public class User {
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TimeEntry> timeEntries;
+
+    public void changePassword(String newPassword){
+        if(newPassword == null){
+            throw new IllegalArgumentException("a senha não pode ser nula");
+        }
+        this.password = newPassword;
+    }
 }

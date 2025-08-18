@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserRegisterResponse>register(@RequestBody UserRegisterRequest request) {
+    public ResponseEntity<UserRegisterResponse>register(@Valid @RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = userService.register(request);
         return ResponseEntity.ok(response);
     }

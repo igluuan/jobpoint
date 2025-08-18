@@ -2,7 +2,6 @@ package om.dev.jobpoint.mapper;
 
 import om.dev.jobpoint.dtos.request.timeEntry.TimeEntryRequest;
 import om.dev.jobpoint.dtos.response.timeEntry.TimeEntryResponse;
-import om.dev.jobpoint.enums.RecordType;
 import om.dev.jobpoint.model.TimeEntry;
 import om.dev.jobpoint.model.User;
 import org.springframework.stereotype.Component;
