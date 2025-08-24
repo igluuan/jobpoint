@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import om.dev.jobpoint.enums.Role;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +26,9 @@ public class User {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<TimeEntry> timeEntries;
 

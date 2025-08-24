@@ -1,7 +1,9 @@
 package om.dev.jobpoint.controller.user;
 
 import lombok.RequiredArgsConstructor;
+import om.dev.jobpoint.dtos.request.user.UserAuthenticationRequest;
 import om.dev.jobpoint.dtos.request.user.UserRegisterRequest;
+import om.dev.jobpoint.dtos.response.user.UserAuthenticationResponse;
 import om.dev.jobpoint.dtos.response.user.UserRegisterResponse;
 import om.dev.jobpoint.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,12 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserRegisterResponse>register(@Valid @RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = userService.register(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserAuthenticationResponse> login(@Valid @RequestBody UserAuthenticationRequest request) {
+        UserAuthenticationResponse response = userService.login(request);
         return ResponseEntity.ok(response);
     }
 }

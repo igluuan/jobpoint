@@ -3,6 +3,7 @@ package om.dev.jobpoint.mapper;
 import org.springframework.stereotype.Component;
 import om.dev.jobpoint.model.User;
 import om.dev.jobpoint.dtos.request.user.UserRegisterRequest;
+import om.dev.jobpoint.dtos.response.user.UserAuthenticationResponse;
 import om.dev.jobpoint.dtos.response.user.UserRegisterResponse;
 import java.util.Collections;
 
@@ -15,6 +16,7 @@ public class UserMapper {
                 username,
                 request.email(),
                 request.password(),
+                request.role(),
                 Collections.emptyList()
         );
     }
@@ -23,6 +25,13 @@ public class UserMapper {
         return new UserRegisterResponse(
                 user.getId(),
                 user.getUsername()
+        );
+    }
+
+    public UserAuthenticationResponse toUserAuthenticationResponse(String token, long expiresIn) {
+        return new UserAuthenticationResponse(
+                token,
+                expiresIn
         );
     }
 }

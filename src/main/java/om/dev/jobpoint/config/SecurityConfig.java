@@ -1,5 +1,3 @@
-
-
 package om.dev.jobpoint.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -9,8 +7,10 @@ import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,25 +26,53 @@ import java.security.interfaces.RSAPublicKey;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    // Injeta os BEANS de chave que foram criados pela JwtKeyConfig.
-    // Esta é a forma correta de obter as chaves.
     private final RSAPublicKey publicKey;
     private final RSAPrivateKey privateKey;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+            .securityMatcher("/api/**")
             .csrf(AbstractHttpConfigurer::disable)
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+                .requestMatchers("/api/v1/users").hasAuthority("SCOPE_ROLE_GESTOR")
+                .requestMatchers("/api/v1/users/login").permitAll()
+                .requestMatchers("/api/v1/time-entry/**").hasAnyAuthority("SCOPE_ROLE_FUNCIONARIO", "SCOPE_ROLE_GESTOR")
+                .requestMatchers("/api/v1/admin/**").hasAuthority("SCOPE_ROLE_GESTOR")
                 .anyRequest().authenticated()
+            )
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/login", "/css/**", "/images/**").permitAll()
+                .requestMatchers("/register").hasRole("GESTOR")
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")
+                .usernameParameter("email")
+                .defaultSuccessUrl("/dashboard", true)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutSuccessUrl("/")
+                .permitAll()
             );
         return http.build();
     }
+
 
     @Bean
     public JwtDecoder jwtDecoder() {
