@@ -3,6 +3,16 @@ spring:
         name: jobpoint
     profiles:
         active: dev
+    thymeleaf:
+        cache: false
+        prefix: classpath:/templates/
+        suffix: .html
+        mode: HTML
+        encoding: UTF-8
+    web:
+        resources:
+            static-locations: classpath:/static/
+            add-mappings: true
     jwt:
         private-key-path: classpath:certs/app.key
         public-key-path: classpath:certs/app.pub
